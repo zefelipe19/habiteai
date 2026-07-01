@@ -1,5 +1,10 @@
 <h1>Seja Bem-Vindo ao HabiteAí</h1>
 <app-searchbox></app-searchbox>
 @for (property of properties; track property.id) {
-    <app-property></app-property>
+    <app-property
+    [id]="property.id"
+    [area]="property.area"
+    [restrooms]="property.restrooms"
+    [bathrooms]="property.bathrooms"
+    ></app-property>
 }

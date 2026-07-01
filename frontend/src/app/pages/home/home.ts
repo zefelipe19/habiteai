@@ -11,13 +11,25 @@ import { SearchBox } from "../../components/searchbox/searchbox"
 export class Home {
   properties = [
     {
-      id: 1
+      id: 1,
+      area: 18,
+      restrooms: 3,
+      bathrooms: 1,
+      parkingSpace: 1,
     },
     {
-      id: 2
+      id: 2,
+      area: 28,
+      restrooms: 4,
+      bathrooms: 2,
+      parkingSpace: 2,
     },
     {
-      id: 3
+      id: 3,
+      area: 18,
+      restrooms: 1,
+      bathrooms: 1,
+      parkingSpace: 1,
     },
   ]
 }
