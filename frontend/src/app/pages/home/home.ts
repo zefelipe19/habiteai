@@ -1,6 +1,8 @@
-import { Component } from "@angular/core";
-import { Property } from "../../components/property/property"
-import { SearchBox } from "../../components/searchbox/searchbox"
+import { Component, inject, OnInit } from "@angular/core";
+import { Property } from "../../components/property/property";
+import { SearchBox } from "../../components/searchbox/searchbox";
+import { PropertyService } from "../../services/property-service";
+import { propertyBase } from "../../models/propertyModel"
 
 @Component({
   selector: "app-home",
@@ -8,28 +10,10 @@ import { SearchBox } from "../../components/searchbox/searchbox"
   templateUrl: "./home.html",
   styleUrl: "./home.css",
 })
-export class Home {
-  properties = [
-    {
-      id: 1,
-      area: 18,
-      restrooms: 3,
-      bathrooms: 1,
-      parkingSpace: 1,
-    },
-    {
-      id: 2,
-      area: 28,
-      restrooms: 4,
-      bathrooms: 2,
-      parkingSpace: 2,
-    },
-    {
-      id: 3,
-      area: 18,
-      restrooms: 1,
-      bathrooms: 1,
-      parkingSpace: 1,
-    },
-  ]
+export class Home implements OnInit {
+  private propertyService = inject(PropertyService);
+  properties:Array<propertyBase> = [];
+  ngOnInit() {
+    this.properties = this.propertyService.getProperties();
+  }
 }
