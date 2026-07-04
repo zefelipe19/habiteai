@@ -1,0 +1,51 @@
+@if (!willRegister) {
+<form id="loginForm" [formGroup]="loginForm" (ngSubmit)="makeLogin()">
+    <div>
+        <label for="loginEmail">
+            Seu email
+            <input type="email" name="loginEmail" id="loginEmail" placeholder="Seu email" formControlName="loginEmail">
+        </label>
+    </div>
+    <div>
+        <label for="password">
+            Senha
+            <input [type]="showPassword? 'text' : 'password' " name="password" id="password" placeholder="Sua senha"
+                formControlName="loginPassword">
+            <button type="button" (click)="toggleShowPassword()">Ver/Esconder</button>
+        </label>
+    </div>
+    <div>
+        <input type="submit" [disabled]="!loginForm.valid" value="Acessar" id="loginButton">
+    </div>
+</form>
+}
+
+@if (willRegister) {
+<form [formGroup]="registerForm" id="RegisterForm" (ngSubmit)="makeRegistration()">
+    <label for="registerEmail">
+        Seu melhor e-mail
+        <input type="text" name="registerEmail" id="registerEmail" placeholder="Seu melhor e-mail!"
+            formControlName="registerEmail">
+    </label>
+    <label for="password">
+        Escolha uma senha
+        <input [type]="showPassword? 'text' : 'password' " name="password" id="password"
+            placeholder="Escolha uma boa senha :)" formControlName="registerPassword">
+    </label>
+    <label for="password2">
+        Repita a sua senha
+        <input [type]="showPassword? 'text' : 'password' " name="password2" id="password2"
+            placeholder="Repita aqui a senha" formControlName="registerPassword2">
+    </label>
+    <button type="button" (click)="toggleShowPassword()">Ver/Esconder</button>
+    <input type="submit" value="Registar" id="registerButton">
+</form>
+}
+
+@if (!willRegister) {
+<h3>Não tem conta?</h3>
+<button (click)="toggleLoginRegisterSession()">Registre-se</button>
+} @else {
+<h3>Já tem conta?</h3>
+<button (click)="toggleLoginRegisterSession()">Acessar</button>
+}
