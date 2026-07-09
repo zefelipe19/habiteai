@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { AuthService } from "../../services/auth-service";
 
 @Component({
   selector: 'app-login-register',
@@ -8,6 +9,8 @@ import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
   styleUrl: './login-register.css',
 })
 export class LoginRegister {
+  constructor (protected authService: AuthService) {}
+
   isAuthenticated = false;
   willRegister = false;
   showPassword = false;
@@ -23,16 +26,8 @@ export class LoginRegister {
     registerPassword2: new FormControl(''),
   });
 
-  LoginResgister() {
-    if (!this.isAuthenticated) {
-      console.log('Aqui');
-    }
-  }
 
   toggleLoginRegisterSession() {
-    console.log(
-      `valor de willRegister ${this.willRegister}; valor de isAuthenticated ${this.isAuthenticated}`,
-    );
     return ((this.willRegister = !this.willRegister), this.loginForm.reset());
   }
 
@@ -42,6 +37,7 @@ export class LoginRegister {
 
   makeLogin() {
     console.log(this.loginForm.value);
+    this.authService.login();
   }
 
   makeRegistration() {

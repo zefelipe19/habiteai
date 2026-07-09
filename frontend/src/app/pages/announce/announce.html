@@ -1,2 +1,5 @@
 <h1>Anunciar</h1>
-<app-login-register></app-login-register>
+<app-create-property></app-create-property>
+@if(!authService.isLoggedIn()) {
+    <app-login-register></app-login-register>
+}

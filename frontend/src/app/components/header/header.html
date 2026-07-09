@@ -5,5 +5,17 @@
         <a href="">Comprar</a>
         <a routerLink="/anunciar">Anunciar</a>
         <a href="">Sobre</a>
+        @if(authService.isLoggedIn()) {
+            <button (click)="authService.logout()">Sair</button>
+            
+        } @else {
+            <button (click)="showLoginPopUp()" [disabled]="loginPopUp">Entrar</button>
+            @if(loginPopUp) {
+                <app-login-register></app-login-register>
+                @if(loginPopUp) {    
+                    <button (click)="showLoginPopUp()">Cancelar</button>
+                }
+            }
+        }
     </nav>
 </header>
