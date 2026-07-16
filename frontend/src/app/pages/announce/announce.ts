@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { LoginRegister } from '../../components/login-register/login-register';
 import { CreateProperty } from '../../components/create-property/create-property';
-import { AuthService } from "../../services/auth-service";
-
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-announce',
@@ -11,5 +10,10 @@ import { AuthService } from "../../services/auth-service";
   styleUrl: './announce.css',
 })
 export class Announce {
-  constructor (protected authService: AuthService) {}
+  constructor(protected authService: AuthService) {}
+  showLogin = signal(false);
+  showLoginForm() {
+    console.log('show');
+    this.showLogin.set(true);
+  }
 }

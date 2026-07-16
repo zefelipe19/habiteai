@@ -1,5 +1,7 @@
 <h1>Anunciar</h1>
-<app-create-property></app-create-property>
+<app-create-property (propertyCreatedSuccessfully)="showLoginForm()"></app-create-property>
 @if(!authService.isLoggedIn()) {
-    <app-login-register></app-login-register>
+@if(showLogin()) {
+<app-login-register></app-login-register>
+}
 }
