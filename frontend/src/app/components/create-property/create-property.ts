@@ -1,31 +1,20 @@
-import { Component, EventEmitter, output } from '@angular/core';
+import { Component, EventEmitter, output, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { PropertyFormService } from "../../services/property-form-service";
 
 @Component({
   selector: 'app-create-property',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './create-property.html',
   styleUrl: './create-property.css',
 })
 export class CreateProperty {
+  private propertyFormService = inject(PropertyFormService)
+
+  propertyAnnouncementForm = this.propertyFormService.propertyAnnouncementForm.controls.propertyForm;
   propertyCreatedSuccessfully = output<void>();
-
-  propertyForm = new FormGroup({
-    propertyArea: new FormControl<Number>(0),
-    propertyRestrooms: new FormControl<Number>(0),
-    propertyBathrooms: new FormControl<Number>(0),
-    propertyParkingSpace: new FormControl<Number>(0),
-  });
-
-  propertyAnnouncement = new FormGroup({
-    price: new FormControl<Number>(0),
-    type: new FormControl<String>(''),
-    announcementId: new FormControl<Number>(0),
-    advertiserId: new FormControl<Number>(0),
-  });
-
+  
   nextStep() {
-    console.log('nextStep');
     this.propertyCreatedSuccessfully.emit();
   }
 }

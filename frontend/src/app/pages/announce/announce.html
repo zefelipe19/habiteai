@@ -1,7 +1,10 @@
 <h1>Anunciar</h1>
-<app-create-property (propertyCreatedSuccessfully)="showLoginForm()"></app-create-property>
-@if(!authService.isLoggedIn()) {
-@if(showLogin()) {
-<app-login-register></app-login-register>
+@if(showPropertyOrLoginForm()){
+    <app-create-property (propertyCreatedSuccessfully)="toggleShowPropertyOrLoginForm()"></app-create-property>
 }
+@if(!authService.isLoggedIn()) {
+    @if(!showPropertyOrLoginForm()) {
+        <app-login-register></app-login-register>
+        <button (click)="toggleShowPropertyOrLoginForm()">Voltar</button>
+    }
 }

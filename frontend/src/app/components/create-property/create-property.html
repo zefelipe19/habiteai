@@ -1,39 +1,42 @@
 <h3>Dados da Propriedade</h3>
-<form>
-    <label for="propertyArea">
-        Área do imovel
+<form id="createPorperty" [formGroup]="propertyAnnouncementForm">
+    <div formGroupName="propertyForm">
+        <label for="propertyArea">
+            Área do imovel
         <input type="number" placeholder="20m²" id="propertyArea" name="propertyArea">
-    </label>
-    <label for="propertyRestrooms">
-        Quatos quartos?
-        <input type="number" placeholder="Ex: 3" name="propertyRestrooms" id="propertyRestrooms">
-    </label>
-    <label for="propertyBathrooms">
-        Quantos banheiros?
-        <input type="number" placeholder="Ex: 2" name="propertyBathrooms" id="propertyBathrooms">
-    </label>
-    <label for="propertyParkingSpace">
-        Quantas garagens?
-        <input type="number" placeholder="Ex: 1" name="propertyParkingSpace" id="propertyParkingSpace">
-    </label>
+        </label>
+        <label for="propertyRestrooms">
+            Quatos quartos?
+            <input type="number" placeholder="Ex: 3" name="propertyRestrooms" id="propertyRestrooms">
+        </label>
+        <label for="propertyBathrooms">
+            Quantos banheiros?
+            <input type="number" placeholder="Ex: 2" name="propertyBathrooms" id="propertyBathrooms">
+        </label>
+        <label for="propertyParkingSpace">
+            Quantas garagens?
+            <input type="number" placeholder="Ex: 1" name="propertyParkingSpace" id="propertyParkingSpace">
+        </label>
+    </div>
     <div>
-        <input type="submit" value="Enviar">
+        <hr>
+    </div>
+    <div formGroupName="announcementForm">
+        <label for="propertyPrice">
+            Preço
+            <input type="number" name="propertyPrice" id="propertyPrice" placeholder="R$ 1200">
+        </label>
+        <label for="propertyType">
+            Tipo do anuncio
+            <select name="propertyType" id="propertyType">
+                <option value="rent">Alugar</option>
+                <option value="sell">Vender</option>
+                <option value="season">Temporada</option>
+            </select>
+        </label>
+    </div>
+    <!-- <input type="submit" value="Enviar"> -->
+    <div>
+        <button type="button" (click)="nextStep()">Proximo</button>
     </div>
 </form>
-<form>
-    <label for="propertyPrice">
-        Preço
-        <input type="number" name="propertyPrice" id="propertyPrice" placeholder="R$ 1200">
-    </label>
-    <label for="propertyType">
-        Tipo do anuncio
-        <select name="propertyType" id="propertyType">
-            <option value="rent">Alugar</option>
-            <option value="sell">Vender</option>
-            <option value="season">Temporada</option>
-        </select>
-    </label>
-</form>
-<div>
-    <button (click)="nextStep()">Proximo</button>
-</div>

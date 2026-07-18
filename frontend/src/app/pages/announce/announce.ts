@@ -11,9 +11,11 @@ import { AuthService } from '../../services/auth-service';
 })
 export class Announce {
   constructor(protected authService: AuthService) {}
-  showLogin = signal(false);
-  showLoginForm() {
-    console.log('show');
-    this.showLogin.set(true);
+  showPropertyOrLoginForm = signal(true)
+  
+
+  toggleShowPropertyOrLoginForm() {
+    console.log(this.showPropertyOrLoginForm())
+    this.showPropertyOrLoginForm.set(!this.showPropertyOrLoginForm())
   }
 }
