@@ -1,24 +1,35 @@
-import { Service } from '@angular/core';
-import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { inject, Service, signal } from '@angular/core';
+import { AuthService } from './auth-service';
+import { propertyBase, propertyAnnouncement } from '../models/propertyModel';
 
 @Service()
 export class PropertyFormService {
-    propertyAnnouncementForm = new FormGroup({
-        propertyForm: new FormGroup({
-          propertyArea: new FormControl(0),
-          propertyRestrooms: new FormControl(0),
-          propertyBathrooms: new FormControl(0),
-          propertyParkingSpace: new FormControl(0),
-        }),
-        announcementForm: new FormGroup({
-          price: new FormControl(0),
-          type: new FormControl(''),
-          announcementId: new FormControl(0),
-          advertiserId: new FormControl(0),
-        })
-    });
+  formData = signal<propertyAnnouncement | null>(null);
+  authService = inject(AuthService);
 
-    resetForm() {
-        this.propertyAnnouncementForm.reset()
+  saveData(data: propertyAnnouncement) {
+    this.formData.set(data);
+    console.log('dados salvos temporariamente');
+    if (this.authService.isLoggedIn()) {
+      console.log('ta logado');
+      this.savePermantentData();
+    } else {
+      console.log('não ta logado');
     }
+  }
+
+  savePermantentData() {
+    const propertiesOnMemoryString = localStorage.getItem('properties');
+    const propertyModel = this.formData();
+
+    if (propertiesOnMemoryString) {
+      const propertiesList: Array<propertyBase> = JSON.parse(propertiesOnMemoryString);
+      propertiesList.push(propertyModel!);
+      localStorage.setItem('properties', JSON.stringify(propertiesList));
+    }
+  }
+
+  resetData() {
+    this.formData.set(null);
+  }
 }

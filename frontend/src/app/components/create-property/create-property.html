@@ -3,19 +3,22 @@
     <div formGroupName="propertyForm">
         <label for="propertyArea">
             Área do imovel
-        <input type="number" placeholder="20m²" id="propertyArea" name="propertyArea">
+            <input type="number" placeholder="20m²" id="propertyArea" name="propertyArea" formControlName="area">
         </label>
         <label for="propertyRestrooms">
             Quatos quartos?
-            <input type="number" placeholder="Ex: 3" name="propertyRestrooms" id="propertyRestrooms">
+            <input type="number" placeholder="Ex: 3" name="propertyRestrooms" id="propertyRestrooms"
+                formControlName="restrooms">
         </label>
         <label for="propertyBathrooms">
             Quantos banheiros?
-            <input type="number" placeholder="Ex: 2" name="propertyBathrooms" id="propertyBathrooms">
+            <input type="number" placeholder="Ex: 2" name="propertyBathrooms" id="propertyBathrooms"
+                formControlName="bathrooms">
         </label>
         <label for="propertyParkingSpace">
             Quantas garagens?
-            <input type="number" placeholder="Ex: 1" name="propertyParkingSpace" id="propertyParkingSpace">
+            <input type="number" placeholder="Ex: 1" name="propertyParkingSpace" id="propertyParkingSpace"
+                formControlName="parkingSpace">
         </label>
     </div>
     <div>
@@ -24,11 +27,11 @@
     <div formGroupName="announcementForm">
         <label for="propertyPrice">
             Preço
-            <input type="number" name="propertyPrice" id="propertyPrice" placeholder="R$ 1200">
+            <input type="number" name="propertyPrice" id="propertyPrice" placeholder="R$ 1200" formControlName="price">
         </label>
         <label for="propertyType">
             Tipo do anuncio
-            <select name="propertyType" id="propertyType">
+            <select name="propertyType" id="propertyType" formControlName="type">
                 <option value="rent">Alugar</option>
                 <option value="sell">Vender</option>
                 <option value="season">Temporada</option>

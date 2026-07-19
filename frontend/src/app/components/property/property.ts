@@ -8,8 +8,10 @@ import { propertyBase } from '../../models/propertyModel';
   styleUrl: './property.css',
 })
 export class Property {
-  area = input<number>(0);
-  restrooms = input<number>(0);
-  bathrooms = input<number>(0);
-  parkingSpace = input<number>(0);
+  area = input<number | null>(0);
+  restrooms = input<number | null>(0);
+  bathrooms = input<number | null>(0);
+  parkingSpace = input<number | null>(0);
+  price = input<number | null>(0);
+  type = input<string | null>('');
 }
