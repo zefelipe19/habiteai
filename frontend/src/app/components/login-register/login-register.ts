@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, effect } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { AuthService } from "../../services/auth-service";
 
@@ -9,8 +9,10 @@ import { AuthService } from "../../services/auth-service";
   styleUrl: './login-register.css',
 })
 export class LoginRegister {
-  constructor (protected authService: AuthService) {}
-
+  constructor() {}
+  
+  protected authService = inject(AuthService);
+  
   isAuthenticated = false;
   willRegister = false;
   showPassword = false;
@@ -21,9 +23,9 @@ export class LoginRegister {
   });
 
   registerForm = new FormGroup({
-    registerEmail: new FormControl(''),
-    registerPassword: new FormControl(''),
-    registerPassword2: new FormControl(''),
+    registerEmail: new FormControl<string | null>(''),
+    registerPassword: new FormControl<string |null>(''),
+    registerPassword2: new FormControl<string | null>(''),
   });
 
 
@@ -36,14 +38,18 @@ export class LoginRegister {
   }
 
   makeLogin() {
-    console.log(this.loginForm.value);
-    this.authService.login();
+    const data = this.loginForm.getRawValue();
+    this.authService.login({email: data.loginEmail, password: data.loginPassword}); 
   }
 
   makeRegistration() {
-    const registerForm = this.registerForm.value;
+    const registerForm = this.registerForm.getRawValue();
     if (registerForm.registerPassword != registerForm.registerPassword2) {
       window.alert('Os dois campos de senha precisam ser iguais');
     }
+    
+    const newUser = {email: registerForm.registerEmail, password: registerForm.registerPassword }
+    this.authService.registerUser(newUser);
+    
   }
 }

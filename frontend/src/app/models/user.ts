@@ -12,3 +12,7 @@ export interface advertiserUser {
     type: advertiserType;
 }
 
+export interface userForm {
+    email: string | null;
+    password: string | null;
+}

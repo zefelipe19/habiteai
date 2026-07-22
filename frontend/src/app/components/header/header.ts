@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, effect } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { AuthService } from "../../services/auth-service";
 import { LoginRegister } from '../../components/login-register/login-register';
@@ -10,11 +10,17 @@ import { LoginRegister } from '../../components/login-register/login-register';
   styleUrl: "./header.css",
 })
 export class Header {
-  constructor (protected authService: AuthService) {}
+  constructor () {
+    effect(() => {
+      if(this.authService.userCreated()) {
+        this.showLoginPopUp();
+      }
+    })
+  }
+  protected authService = inject(AuthService)
   
   loginPopUp = false;
   showLoginPopUp() {
-    console.log(this.loginPopUp)
     return this.loginPopUp = !this.loginPopUp;
   }
 }
