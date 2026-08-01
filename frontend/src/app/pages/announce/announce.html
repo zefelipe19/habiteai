@@ -1,10 +1,35 @@
-<h1>Anunciar</h1>
-@if(showPropertyOrLoginForm()){
-    <app-create-property (propertyCreatedSuccessfully)="toggleShowPropertyOrLoginForm()"></app-create-property>
-}
-@if(!authService.isLoggedIn()) {
-    @if(!showPropertyOrLoginForm()) {
-        <app-login-register></app-login-register>
-        <button (click)="toggleShowPropertyOrLoginForm()">Voltar</button>
-    }
-}
+<div class="min-h-screen bg-gray-50 py-12 px-4">
+    <div class="container mx-auto max-w-4xl">
+
+        <h1 class="text-3xl md:text-4xl font-bold text-[#0b1a30] mb-8 text-center">
+            Anunciar Imóvel
+        </h1>
+
+        <!-- Formulário de Criação de Propriedade -->
+        @if(showPropertyOrLoginForm()) {
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-md border border-gray-200">
+            <app-create-property (propertyCreatedSuccessfully)="toggleShowPropertyOrLoginForm()"></app-create-property>
+        </div>
+        }
+
+        <!-- Tela de Login Obrigatório -->
+        @if(!authService.isLoggedIn() && !showPropertyOrLoginForm()) {
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-md border border-gray-200 max-w-md mx-auto">
+            <div class="text-center mb-6 border-b border-gray-200 pb-4">
+                <h2 class="text-xl font-bold text-[#0b1a30]">Quase lá!</h2>
+                <p class="text-sm text-gray-500 mt-2">
+                    Faça login ou cadastre-se para publicar seu anúncio.
+                </p>
+            </div>
+
+            <app-login-register></app-login-register>
+
+            <button (click)="toggleShowPropertyOrLoginForm()"
+                class="w-full mt-4 bg-gray-200 hover:bg-gray-300 text-[#0b1a30] font-bold py-2 px-4 rounded-lg transition-colors">
+                Voltar para edição do anúncio
+            </button>
+        </div>
+        }
+
+    </div>
+</div>

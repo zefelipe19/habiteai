@@ -1,26 +1,31 @@
-import { Component, inject, effect } from "@angular/core";
-import { RouterLink } from "@angular/router";
-import { AuthService } from "../../services/auth-service";
+import { Component, inject, effect } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth-service';
 import { LoginRegister } from '../../components/login-register/login-register';
 
 @Component({
-  selector: "app-header",
+  selector: 'app-header',
   imports: [RouterLink, LoginRegister],
-  templateUrl: "./header.html",
-  styleUrl: "./header.css",
+  templateUrl: './header.html',
 })
 export class Header {
-  constructor () {
+  constructor() {
     effect(() => {
-      if(this.authService.userCreated()) {
+      if (this.authService.userCreated()) {
         this.showLoginPopUp();
       }
-    })
+    });
   }
-  protected authService = inject(AuthService)
-  
+  protected authService = inject(AuthService);
+
   loginPopUp = false;
+  mobileMenuOpen = false;
+
   showLoginPopUp() {
-    return this.loginPopUp = !this.loginPopUp;
+    this.loginPopUp = !this.loginPopUp;
+  }
+
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
   }
 }
