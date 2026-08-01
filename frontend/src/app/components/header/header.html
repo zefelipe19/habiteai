@@ -1,21 +1,71 @@
-<header class="">
-    <img src="habiteai.png" alt="HabiteAí" routerLink="/">
-    <nav>
-        <a href="">Alugar</a>
-        <a href="">Comprar</a>
-        <a routerLink="/anunciar">Anunciar</a>
-        <a href="">Sobre</a>
-        @if(authService.isLoggedIn()) {
-            <button (click)="authService.logout()">Sair</button>
-            
-        } @else {
-            <button (click)="showLoginPopUp()" [disabled]="loginPopUp">Entrar</button>
-            @if(loginPopUp) {
-                <app-login-register></app-login-register>
-                @if(loginPopUp) {    
-                    <button (click)="showLoginPopUp()">Cancelar</button>
+<header class="bg-white text-[#0b1a30] shadow-md relative z-40">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+
+        <!-- Logo -->
+        <a routerLink="/" class="flex items-center">
+            <img src="habiteai.png" alt="HabiteAí" class="h-12 w-auto">
+        </a>
+
+        <!-- Botão Menu Mobile (Hambúrguer) -->
+        <button class="md:hidden text-[#0b1a30] focus:outline-none" (click)="toggleMobileMenu()">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                @if(mobileMenuOpen) {
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                } @else {
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 }
+            </svg>
+        </button>
+
+        <!-- Navegação Desktop -->
+        <nav class="hidden md:flex items-center gap-6 font-medium">
+            <a routerLink="/alugar" class="hover:text-[#f37021] transition-colors">Alugar</a>
+            <a routerLink="/comprar" class="hover:text-[#f37021] transition-colors">Comprar</a>
+            <a routerLink="/anunciar" class="hover:text-[#f37021] transition-colors">Anunciar</a>
+            <a routerLink="/sobre" class="hover:text-[#f37021] transition-colors">Sobre</a>
+
+            @if(authService.isLoggedIn()) {
+            <button (click)="authService.logout()"
+                class="bg-[#f37021] hover:bg-orange-600 text-white px-5 py-2 rounded-md transition-colors">Sair</button>
+            } @else {
+            <button (click)="showLoginPopUp()" [disabled]="loginPopUp"
+                class="bg-[#f37021] hover:bg-orange-600 text-white px-5 py-2 rounded-md transition-colors">Entrar</button>
             }
+        </nav>
+    </div>
+
+    <!-- Navegação Mobile -->
+    @if(mobileMenuOpen) {
+    <nav class="md:hidden bg-white border-t border-gray-200 px-4 pt-2 pb-4 space-y-3 shadow-inner">
+        <a routerLink="/alugar" class="block hover:text-[#f37021]" (click)="toggleMobileMenu()">Alugar</a>
+        <a routerLink="/comprar" class="block hover:text-[#f37021]" (click)="toggleMobileMenu()">Comprar</a>
+        <a routerLink="/anunciar" class="block hover:text-[#f37021]" (click)="toggleMobileMenu()">Anunciar</a>
+        <a routerLink="/sobre" class="block hover:text-[#f37021]" (click)="toggleMobileMenu()">Sobre</a>
+
+        @if(authService.isLoggedIn()) {
+        <button (click)="authService.logout(); toggleMobileMenu()"
+            class="w-full text-center bg-[#f37021] hover:bg-orange-600 text-white px-4 py-2 rounded-md">Sair</button>
+        } @else {
+        <button (click)="showLoginPopUp(); toggleMobileMenu()"
+            class="w-full text-center bg-[#f37021] hover:bg-orange-600 text-white px-4 py-2 rounded-md">Entrar</button>
         }
     </nav>
+    }
 </header>
+
+<!-- Modal de Login/Registro sobreposto -->
+@if(loginPopUp) {
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div class="bg-white p-6 rounded-lg shadow-xl relative w-full max-w-md mx-4">
+        <!-- Botão de Fechar Modal -->
+        <button (click)="showLoginPopUp()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+
+        <!-- Componente filho escutando o evento -->
+        <app-login-register (onAuthSuccess)="loginPopUp = false"></app-login-register>
+    </div>
+</div>
+}

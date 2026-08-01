@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
-import { AuthService } from "../../services/auth-service";
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-login-register',
   imports: [ReactiveFormsModule],
   templateUrl: './login-register.html',
-  styleUrl: './login-register.css',
 })
 export class LoginRegister {
-  constructor (protected authService: AuthService) {}
+  constructor(protected authService: AuthService) {}
+
+  // Cria o emissor de evento
+  onAuthSuccess = output<void>();
 
   isAuthenticated = false;
   willRegister = false;
@@ -26,24 +28,28 @@ export class LoginRegister {
     registerPassword2: new FormControl(''),
   });
 
-
   toggleLoginRegisterSession() {
-    return ((this.willRegister = !this.willRegister), this.loginForm.reset());
+    this.willRegister = !this.willRegister;
+    this.loginForm.reset();
   }
 
   toggleShowPassword() {
-    return (this.showPassword = !this.showPassword);
+    this.showPassword = !this.showPassword;
   }
 
   makeLogin() {
-    console.log(this.loginForm.value);
     this.authService.login();
+    this.onAuthSuccess.emit(); // Dispara o evento de sucesso
   }
 
   makeRegistration() {
     const registerForm = this.registerForm.value;
     if (registerForm.registerPassword != registerForm.registerPassword2) {
       window.alert('Os dois campos de senha precisam ser iguais');
+      return;
     }
+
+    // Se o registro também fizer login automático, descomente a linha abaixo:
+    // this.onAuthSuccess.emit();
   }
 }

@@ -1,7 +1,36 @@
-<h1>Seja Bem-Vindo ao HabiteAí</h1>
-<app-searchbox></app-searchbox>
-@for (property of properties; track property.id) {
-<app-property [id]="property.id" [area]="property.area" [restrooms]="property.restrooms"
-    [bathrooms]="property.bathrooms" [parkingSpace]="property.parkingSpace" [price]="property.price"
-    [type]="property.type"></app-property>
-}
+<main class="min-h-screen bg-gray-50 pb-16">
+
+    <!-- Hero Section -->
+    <section class="bg-[#0b1a30] text-white pt-20 pb-24 px-4 text-center">
+        <h1 class="text-3xl md:text-5xl font-bold mb-4">
+            Seja Bem-Vindo ao HabiteAí
+        </h1>
+        <p class="text-gray-300 text-lg max-w-2xl mx-auto">
+            Encontre o imóvel ideal para você morar ou investir.
+        </p>
+    </section>
+
+    <!-- Container do Searchbox (com margem negativa para sobrepor o Hero) -->
+    <div class="container mx-auto px-4 -mt-16 relative z-20">
+        <app-searchbox></app-searchbox>
+    </div>
+
+    <!-- Lista de Imóveis -->
+    <section class="container mx-auto px-4 mt-16">
+        <h2 class="text-2xl font-bold text-[#0b1a30] mb-8">Imóveis Recentes</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            @for (property of properties; track property.id) {
+            <app-property [id]="property.id" [area]="property.area" [restrooms]="property.restrooms"
+                [bathrooms]="property.bathrooms" [parkingSpace]="property.parkingSpace" [price]="property.price"
+                [type]="property.type">
+            </app-property>
+            } @empty {
+            <div class="col-span-full bg-white p-8 rounded-lg shadow text-center text-gray-500 border border-gray-200">
+                Nenhum imóvel disponível no momento.
+            </div>
+            }
+        </div>
+    </section>
+
+</main>

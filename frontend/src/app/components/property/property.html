@@ -1,28 +1,54 @@
-<div>
-    <div>
-        <img src="https://picsum.photos/300/200" alt="">
-    </div>
-    <div>
-        <p><strong>Casa</strong></p>
-        <p><small>Endereço</small></p>
-        <div>
-            <p><small>{{ area() }}m² | {{ restrooms() }} quartos | {{ bathrooms() }} banheiro | {{parkingSpace()}}
-                    Vagas</small></p>
-        </div>
-        <div>
+<div
+    class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow duration-300 flex flex-col h-full cursor-pointer">
+
+    <!-- Imagem -->
+    <div class="relative w-full h-48 bg-gray-200">
+        <img src="https://picsum.photos/300/200" alt="Imagem do imóvel" class="w-full h-full object-cover">
+
+        <!-- Badge de Tipo (Sobre a imagem) -->
+        <div class="absolute top-3 left-3">
             @switch (type()) {
             @case ('rent') {
-            <p>Alugar</p>
+            <span class="bg-[#0b1a30] text-white text-xs font-bold px-3 py-1 rounded-full shadow">Alugar</span>
             }
             @case ('sell') {
-            <p>A Venda</p>
+            <span class="bg-[#f37021] text-white text-xs font-bold px-3 py-1 rounded-full shadow">À Venda</span>
             }
             @case ('season') {
-            <p>Temporada</p>
+            <span class="bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow">Temporada</span>
             }
             }
         </div>
-        <p><strong>R$ {{price()}}/mes</strong></p>
     </div>
-    <button>Enviar menssagem</button>
+
+    <!-- Informações -->
+    <div class="p-5 flex flex-col flex-grow">
+        <p class="text-lg font-bold text-[#0b1a30]">Casa</p>
+        <p class="text-sm text-gray-500 mb-4">Endereço</p>
+
+        <!-- Detalhes do Imóvel -->
+        <div
+            class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-600 mb-4 border-y border-gray-100 py-3">
+            <span><strong>{{ area() }}</strong> m²</span>
+            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+            <span><strong>{{ restrooms() }}</strong> quartos</span>
+            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+            <span><strong>{{ bathrooms() }}</strong> banheiros</span>
+            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+            <span><strong>{{ parkingSpace() }}</strong> vagas</span>
+        </div>
+
+        <!-- Preço e Botão -->
+        <div class="mt-auto">
+            <p class="text-2xl font-bold text-[#0b1a30] mb-4">
+                R$ {{ price() }}
+                @if (type() === 'rent') { <span class="text-sm font-normal text-gray-500">/mês</span> }
+            </p>
+
+            <button
+                class="w-full bg-[#f37021] hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                Enviar mensagem
+            </button>
+        </div>
+    </div>
 </div>

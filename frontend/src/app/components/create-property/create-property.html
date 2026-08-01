@@ -1,45 +1,73 @@
-<h3>Dados da Propriedade</h3>
-<form id="createPorperty" [formGroup]="propertyAnnouncementForm">
-    <div formGroupName="propertyForm">
-        <label for="propertyArea">
-            Área do imovel
-            <input type="number" placeholder="20m²" id="propertyArea" name="propertyArea" formControlName="area">
-        </label>
-        <label for="propertyRestrooms">
-            Quatos quartos?
-            <input type="number" placeholder="Ex: 3" name="propertyRestrooms" id="propertyRestrooms"
-                formControlName="restrooms">
-        </label>
-        <label for="propertyBathrooms">
-            Quantos banheiros?
-            <input type="number" placeholder="Ex: 2" name="propertyBathrooms" id="propertyBathrooms"
-                formControlName="bathrooms">
-        </label>
-        <label for="propertyParkingSpace">
-            Quantas garagens?
-            <input type="number" placeholder="Ex: 1" name="propertyParkingSpace" id="propertyParkingSpace"
-                formControlName="parkingSpace">
-        </label>
-    </div>
-    <div>
-        <hr>
-    </div>
-    <div formGroupName="announcementForm">
-        <label for="propertyPrice">
-            Preço
-            <input type="number" name="propertyPrice" id="propertyPrice" placeholder="R$ 1200" formControlName="price">
-        </label>
-        <label for="propertyType">
-            Tipo do anuncio
-            <select name="propertyType" id="propertyType" formControlName="type">
-                <option value="rent">Alugar</option>
-                <option value="sell">Vender</option>
-                <option value="season">Temporada</option>
-            </select>
-        </label>
-    </div>
-    <!-- <input type="submit" value="Enviar"> -->
-    <div>
-        <button type="button" (click)="nextStep()">Proximo</button>
-    </div>
-</form>
+<div class="w-full">
+    <h3 class="text-xl font-bold text-[#0b1a30] mb-6">Informações do Imóvel</h3>
+
+    <form id="createPorperty" [formGroup]="propertyAnnouncementForm" class="space-y-6">
+
+        <!-- Seção de Dados do Imóvel -->
+        <div formGroupName="propertyForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="propertyArea" class="block text-sm font-medium text-[#0b1a30] mb-1">Área do imóvel
+                    (m²)</label>
+                <input type="number" placeholder="Ex: 80" id="propertyArea" name="propertyArea" formControlName="area"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f37021] focus:border-transparent">
+            </div>
+
+            <div>
+                <label for="propertyRestrooms" class="block text-sm font-medium text-[#0b1a30] mb-1">Quantos
+                    quartos?</label>
+                <input type="number" placeholder="Ex: 3" name="propertyRestrooms" id="propertyRestrooms"
+                    formControlName="restrooms"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f37021] focus:border-transparent">
+            </div>
+
+            <div>
+                <label for="propertyBathrooms" class="block text-sm font-medium text-[#0b1a30] mb-1">Quantos
+                    banheiros?</label>
+                <input type="number" placeholder="Ex: 2" name="propertyBathrooms" id="propertyBathrooms"
+                    formControlName="bathrooms"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f37021] focus:border-transparent">
+            </div>
+
+            <div>
+                <label for="propertyParkingSpace" class="block text-sm font-medium text-[#0b1a30] mb-1">Quantas vagas de
+                    garagem?</label>
+                <input type="number" placeholder="Ex: 1" name="propertyParkingSpace" id="propertyParkingSpace"
+                    formControlName="parkingSpace"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f37021] focus:border-transparent">
+            </div>
+        </div>
+
+        <div>
+            <hr class="border-gray-200">
+        </div>
+
+        <!-- Seção de Dados do Anúncio -->
+        <div formGroupName="announcementForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="propertyPrice" class="block text-sm font-medium text-[#0b1a30] mb-1">Preço (R$)</label>
+                <input type="number" name="propertyPrice" id="propertyPrice" placeholder="Ex: 1500"
+                    formControlName="price"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f37021] focus:border-transparent">
+            </div>
+
+            <div>
+                <label for="propertyType" class="block text-sm font-medium text-[#0b1a30] mb-1">Tipo do anúncio</label>
+                <select name="propertyType" id="propertyType" formControlName="type"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f37021] focus:border-transparent bg-white">
+                    <option value="rent">Alugar</option>
+                    <option value="sell">Vender</option>
+                    <option value="season">Temporada</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Botão Próximo -->
+        <div class="pt-4">
+            <button type="button" (click)="nextStep()"
+                class="w-full bg-[#f37021] hover:bg-orange-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                Próximo
+            </button>
+        </div>
+
+    </form>
+</div>
