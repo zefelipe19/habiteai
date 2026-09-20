@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 
 from .database import get_db, engine, Base
 from .models import User
-from .schemas import UserCreate, UserResponse, Token
+from .schemas import UserCreatePhysical, UserCreateJuridical, UserResponse, Token
 from .security import hash_password, verify_password, create_access_token, get_current_user_email
 
 
@@ -29,16 +29,36 @@ app.add_middleware(
 )
 
 
-@app.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
-async def register(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(User).where(User.email == user_data.email))
+@app.post("/register/physical", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+async def register_physical(user_data: UserCreatePhysical, db: AsyncSession = Depends(get_db)):
+    # consultando para ver se a informação passada já não existe no banco de dados
+    result = await db.execute(select(User).where((User.email == user_data.email) | (User.cpf == user_data.cpf)))
     if result.scalar_one_or_none():
-        raise HTTPException(status_code=400, detail="E-mail já cadastrado.")
+        raise HTTPException(
+            status_code=400, detail="E-mail ou CPF já cadastrado")
 
-    new_user = User(
-        email=user_data.email,
-        hashed_password=hash_password(user_data.password)
-    )
+    user_dict = user_data.model_dump(exclude={"password"})
+    user_dict["hashed_password"] = hash_password(user_data.password)
+
+    new_user = User(**user_dict)
+    db.add(new_user)
+    await db.commit()
+    await db.refresh(new_user)
+    return new_user
+
+
+@app.post("/register/juridical", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+async def register_juridical(user_data: UserCreateJuridical, db: AsyncSession = Depends(get_db)):
+    # consultando para ver se essa informação já não existe no banco
+    result = await db.execute(select(User).where((User.email == user_data.email) | (User.cnpj == user_data.cnpj)))
+    if result.scalar_one_or_none():
+        raise HTTPException(
+            status_code=400, detail="Email ou CNPJ já cadastrado")
+
+    user_dict = user_data.model_dump(exclude={"password"})
+    user_dict["hashed_password"] = hash_password(user_data.password)
+
+    new_user = User(**user_dict)
     db.add(new_user)
     await db.commit()
     await db.refresh(new_user)
