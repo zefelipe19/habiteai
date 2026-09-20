@@ -2,7 +2,7 @@ import enum
 from typing import Optional
 from sqlalchemy import String, Boolean, Enum
 from sqlalchemy.orm import Mapped, mapped_column
-from .database import Base
+from database import Base
 
 
 class UserType(str, enum.Enum):
