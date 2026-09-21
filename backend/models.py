@@ -62,33 +62,36 @@ class Property(Base):
 
     # classification
     property_type: Mapped[PropertyType] = mapped_column(
-        Enum(PropertyType, native_enum=False, length=20))
+        Enum(PropertyType, native_enum=False, length=20)
+    )
     rental_type: Mapped[RentalType] = mapped_column(
-        Enum(RentalType, native_enum=False, length=20))
+        Enum(RentalType, native_enum=False, length=20)
+    )
     is_active: Mapped[bool] = mapped_column(default=True)
 
-    # valores opcionais
-    price_per_night: Mapped[Optional[Float]] = mapped_column(Float)
-    price_per_month: Mapped[Optional[Float]] = mapped_column(Float)
-    price_selling: Mapped[Optional[Float]] = mapped_column(Float)
+    # valores opcionais (Float() instanciado + float em minúsculo no Mapped)
+    price_per_night: Mapped[Optional[float]] = mapped_column(Float(), nullable=True)
+    price_per_month: Mapped[Optional[float]] = mapped_column(Float(), nullable=True)
+    price_selling: Mapped[Optional[float]] = mapped_column(Float(), nullable=True)
 
     # caracteristicas
     bedrooms: Mapped[int] = mapped_column(Integer, default=0)
     bathrooms: Mapped[int] = mapped_column(Integer, default=0)
     max_guests: Mapped[int] = mapped_column(Integer, default=1)
-    area_sqm: Mapped[Optional[float]] = mapped_column(Float)  # area em m2
+    area_sqm: Mapped[Optional[float]] = mapped_column(Float(), nullable=True)
 
     state: Mapped[str] = mapped_column(String(2))
     city: Mapped[str] = mapped_column(String(100), index=True)
     neighborhood: Mapped[str] = mapped_column(String(100))
     street: Mapped[str] = mapped_column(String(100))
-    zip_code: Mapped[Optional[str]] = mapped_column(String(10))
+    zip_code: Mapped[Optional[str]] = mapped_column(String(10), nullable=True)
 
-    # geolocalização
-    latitude: Mapped[float] = mapped_column(Float, index=True)
-    longitude: Mapped[float] = mapped_column(Float, index=True)
+    # geolocalização (Float() instanciado)
+    latitude: Mapped[float] = mapped_column(Float(), index=True)
+    longitude: Mapped[float] = mapped_column(Float(), index=True)
 
     # relacionamento com anunciante
     owner_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"))
+        ForeignKey("users.id", ondelete="CASCADE")
+    )
     owner: Mapped["User"] = relationship("User", back_populates="properties")
