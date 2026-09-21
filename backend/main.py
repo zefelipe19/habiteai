@@ -5,10 +5,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from contextlib import asynccontextmanager
 
-from .database import get_db, engine, Base
-from .models import User
-from .schemas import UserCreatePhysical, UserCreateJuridical, UserResponse, Token
-from .security import hash_password, verify_password, create_access_token, get_current_user_email
+from database import get_db, engine, Base
+from models import User
+from schemas import UserCreatePhysical, UserCreateJuridical, UserResponse, Token
+from security import hash_password, verify_password, create_access_token, get_current_user_email
 
 
 @asynccontextmanager
