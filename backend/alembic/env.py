@@ -1,5 +1,3 @@
-from config import settings
-from models import Base
 import asyncio
 from logging.config import fileConfig
 
@@ -12,9 +10,11 @@ from alembic import context
 import sys
 import os
 # ADICIONANDO A RAIZ DO PROJETO AO PATH DO ALEMBIC
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # IMPORTAÇÃO DO PROJETO
+from models import Base
+from config import settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
