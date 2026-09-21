@@ -77,6 +77,7 @@ class RentalType(str, Enum):
     RESIDENTIAL = "RESIDENTIAL"
     SEASONAL = "SEASONAL"
     EVENT = "EVENT"
+    SELL = "SELL"
     ALL = "ALL"
 
 
