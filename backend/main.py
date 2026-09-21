@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Depends, HTTPException, status
+from typing import List, Optional
+from fastapi import FastAPI, Depends, HTTPException, status, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -6,9 +7,9 @@ from sqlalchemy import select
 from contextlib import asynccontextmanager
 
 from database import get_db, engine, Base
-from models import User
-from schemas import UserCreatePhysical, UserCreateJuridical, UserResponse, Token
-from security import hash_password, verify_password, create_access_token, get_current_user_email
+from models import User, Property
+from schemas import UserCreatePhysical, UserCreateJuridical, UserResponse, Token, PropertyCreate, PropertyResponse, RentalType, PropertyType
+from security import hash_password, verify_password, create_access_token, get_current_user
 
 
 @asynccontextmanager
@@ -20,12 +21,16 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Fast & Secure API", lifespan=lifespan)
 
 # Segurança: CORS restrito (Altere para as origens reais em produção)
+origins = [
+    "http://localhost:4200",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:4200"],
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["Authorization", "Content-Type"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -80,6 +85,63 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSessi
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@app.get("/me", response_model=str)
-async def read_protected_route(current_user: str = Depends(get_current_user_email)):
-    return f"Usuário autenticado: {current_user}"
+@app.get("/me", response_model=UserResponse)
+async def read_protected_route(current_user: User = Depends(get_current_user)):
+    return current_user
+
+
+@app.post("/properties", response_model=PropertyResponse, status_code=status.HTTP_201_CREATED)
+async def create_property(property_data: PropertyCreate, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    """Cadastro de nova propriedade vinculada ao usuario autenticado (pressoa fisica ou juridica)"""
+    new_property = Property(**property_data.model_dump(), owner_id=current_user.id)
+    db.add(new_property)
+    await db.commit()
+    await db.refresh(new_property)
+    return new_property
+
+@app.get("/properties", response_model=List[PropertyResponse])
+async def list_properties(
+    city: Optional[str] = Query(None, description="Filtrar por cidade"),
+    state: Optional[str] = Query(None, description="Filtrar por estado (UF)"),
+    rental_type: Optional[RentalType] = Query(None, description="Filtrar por tipo de aluguel (RESIDENTIAL, SEASONAL, EVENT)"),
+    property_type: Optional[PropertyType] = Query(None, description="Filtrar por tipo de imóvel (HOUSE, APARTMENT, etc.)"),
+    # Filtros de Geolocalização para Bounding Box do Mapa Frontend
+    min_lat: Optional[float] = Query(None, ge=-90, le=90),
+    max_lat: Optional[float] = Query(None, ge=-90, le=90),
+    min_lng: Optional[float] = Query(None, ge=-180, le=180),
+    max_lng: Optional[float] = Query(None, ge=-180, le=180),
+    db: AsyncSession = Depends(get_db)
+):
+    """lista as propriedades com suporte a filtros geograficos"""
+    query = select(Property).where(Property.is_active == True)
+    if city:
+        query = query.where(Property.city.ilike(f"%{city}%"))
+    if state:
+        query = query.where(Property.state.ilike(state))
+    if rental_type:
+        query = query.where((Property.rental_type == rental_type) | (Property.rental_type == RentalType.ALL))
+    if property_type:
+        query = query.where(Property.property_type == property_type)
+
+    # Filtro de Bounding Box (Área visível do mapa no Frontend)
+    if min_lat is not None and max_lat is not None:
+        query = query.where(Property.latitude.between(min_lat, max_lat))
+    if min_lng is not None and max_lng is not None:
+        query = query.where(Property.longitude.between(min_lng, max_lng))
+
+    result = await db.execute(query)
+    properties = result.scalars().all()
+    return properties
+
+@app.get("/properties/{property_id}", response_model=PropertyResponse)
+async def get_property_by_id(property_id: int, db: AsyncSession = Depends(get_db)):
+    """retorna os detalhes de uma propriedade em especifico"""
+    result = await db.execute(select(Property).where(Property.id == property_id))
+    property_item = result.scalar_one_or_none()
+
+    if not property_item:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Imovel não encontrado"
+        )
+    return property_item
